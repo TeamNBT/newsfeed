@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
-import { constants } from './styles/constants';
+import { constants } from './constants';
 
-export const GlobalStyle = createGlobalStyle`
+const GlobalStyles = createGlobalStyle`
 ${constants};
 
 html, body {
@@ -48,3 +48,5 @@ a {
     text-decoration: inherit;
 }
 `;
+
+export default GlobalStyles;
