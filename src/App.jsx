@@ -1,6 +1,6 @@
-import GlobalStyles from './styles/GlobalStyles';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { RouterInfo } from './router/Router';
+import GlobalStyles from '@/styles/GlobalStyles';
+import { RouterInfo } from '@/router/Router';
 
 const router = createBrowserRouter(RouterInfo);
 
