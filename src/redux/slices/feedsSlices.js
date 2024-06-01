@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {};
+const initialState = {
+  feeds: []
+};
 
 const feedsSlices = createSlice({
   name: 'feeds',
