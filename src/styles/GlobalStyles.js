@@ -51,6 +51,10 @@ a {
     color: inherit;
     text-decoration: inherit;
 }
+
+img {
+    max-width: 100%;
+}
 `;
 
 export default GlobalStyles;

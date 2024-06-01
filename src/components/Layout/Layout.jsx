@@ -5,25 +5,23 @@ import ProfileSidebar from './ProfileSidebar';
 
 const Layout = () => {
   return (
-    <main>
+    <>
+      <Header />
       <StyledLayout>
-        <Header />
-        <StyledDivider />
         <ProfileSidebar />
-        {Outlet}
+        <Outlet />
       </StyledLayout>
-    </main>
+    </>
   );
 };
 
-const StyledLayout = styled.div`
+const StyledLayout = styled.main`
   width: 1400px;
-  margin: 24px auto 0;
-`;
-
-const StyledDivider = styled.div`
-  width: 100%;
-  height: 24px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1;
 `;
 
 export default Layout;

@@ -45,6 +45,10 @@ const StyledAside = styled.aside`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 118px;
+  z-index: 10;
 `;
 
 const StyledProfile = styled.div`

@@ -21,8 +21,11 @@ const Header = () => {
 };
 
 const StyledHeader = styled.header`
-  height: 70px;
+  height: 118px;
   background-color: var(--color-base-background);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 `;
 
 const StyledContents = styled.div`

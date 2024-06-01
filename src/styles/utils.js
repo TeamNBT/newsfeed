@@ -1,4 +1,4 @@
-import { css } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ellipsisStyle = (line = 1) => css`
   overflow: hidden;
@@ -49,4 +49,9 @@ export const e11yHidden = css`
   overflow: hidden;
   clip: rect(1px 1px 1px 1px);
   clip: rect(1px, 1px, 1px, 1px);
+`;
+
+export const StyledDivider = styled.div`
+  width: 1px;
+  height: ${({ $height }) => `${$height}px`};
 `;
