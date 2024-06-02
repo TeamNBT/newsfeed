@@ -1,4 +1,4 @@
-import { css } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ellipsisStyle = (line = 1) => css`
   overflow: hidden;
@@ -41,3 +41,17 @@ export const darkenHex = (hex, amount) => {
   // 어두워진 색상을 16진수 문자열로 변환합니다.
   return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
 };
+
+export const e11yHidden = css`
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+`;
+
+export const StyledDivider = styled.div`
+  width: 1px;
+  height: ${({ $height }) => `${$height}px`};
+`;
