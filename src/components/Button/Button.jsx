@@ -18,17 +18,18 @@ const Button = forwardRef(
     },
     ref
   ) => {
-    const Comp = href ? StyledLink : StyledButton;
+    const StyledComponent = href ? StyledLink : StyledButton;
+    const buttonProps = href ? { to: href, ...props } : { type, ...props };
+
     return (
-      <Comp
+      <StyledComponent
+        ref={ref}
         className={className}
         $variant={variant}
         $size={size}
         $fullWidth={fullWidth}
         $rounded={rounded}
-        type={type}
-        ref={ref}
-        {...props}
+        {...buttonProps}
       />
     );
   }
