@@ -1,5 +1,5 @@
 import { Home } from '@/pages';
-import Layout from '@/components/Layout/Layout';
+import Layout from '@/components/Layout';
 
 export const RouterInfo = [
   {
