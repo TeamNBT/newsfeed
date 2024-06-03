@@ -7,7 +7,7 @@ const Typography = ({
   color,
   ...props
 }) => {
-  return <StyledTypography as={as} $variant={variant} $weight={weight} $color={color} {...props} />;
+  return <StTypography as={as} $variant={variant} $weight={weight} $color={color} {...props} />;
 };
 
 const variantStyles = {
@@ -39,7 +39,7 @@ const fontWeightStyles = {
   bold: '700'
 };
 
-const StyledTypography = styled.div`
+const StTypography = styled.div`
   ${({ $variant }) => variantStyles[$variant || 'typography5']}
   font-weight: ${({ $weight }) => fontWeightStyles[$weight || 'regular']};
   color: ${({ $color }) => $color || 'var(--color-foreground)'};

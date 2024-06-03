@@ -7,20 +7,26 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <StyledLayout>
+      <StLayout>
         <ProfileSidebar />
-        <Outlet />
-      </StyledLayout>
+        <StSection>
+          <Outlet />
+        </StSection>
+      </StLayout>
     </>
   );
 };
 
-const StyledLayout = styled.main`
+const StLayout = styled.main`
   width: 1400px;
   margin: 0 auto;
   display: flex;
   align-items: flex-start;
   gap: 16px;
+  flex: 1;
+`;
+
+const StSection = styled.section`
   flex: 1;
 `;
 

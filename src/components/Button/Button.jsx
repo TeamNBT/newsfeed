@@ -18,7 +18,7 @@ const Button = forwardRef(
     },
     ref
   ) => {
-    const StyledComponent = href ? StyledLink : StyledButton;
+    const StyledComponent = href ? StLink : StButton;
     const buttonProps = href ? { to: href, ...props } : { type, ...props };
 
     return (
@@ -76,7 +76,7 @@ const sizeStyles = {
   `
 };
 
-const StyledButton = styled.button`
+const StButton = styled.button`
   ${baseStyles}
   ${(props) => variantStyles[props.$variant] || variantStyles.default}
   ${(props) => sizeStyles[props.$size] || sizeStyles.default}
@@ -84,7 +84,7 @@ const StyledButton = styled.button`
   ${(props) => props.$rounded && 'border-radius: 25px;'}
 `;
 
-const StyledLink = styled(Link)`
+const StLink = styled(Link)`
   ${baseStyles}
   ${(props) => variantStyles[props.$variant] || variantStyles.default}
   ${(props) => sizeStyles[props.$size] || sizeStyles.default}
