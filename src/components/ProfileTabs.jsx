@@ -5,7 +5,7 @@ import Typography from '@/components/Typography';
 import { colors } from '@/styles/constants';
 
 const tabs = [
-  { to: '/profile', label: '내 프로필' },
+  { to: '/profile', label: '내 포스트' },
   { to: '/profile/favorites', label: '저장한 포스트' }
 ];
 
