@@ -1,4 +1,4 @@
-import { Home } from '@/pages';
+import { Home, Detail } from '@/pages';
 import Layout from '@/components/Layout';
 
 export const RouterInfo = [
@@ -9,6 +9,10 @@ export const RouterInfo = [
       {
         index: true,
         element: <Home />
+      },
+      {
+        path: '/detail',
+        element: <Detail />
       }
     ]
   }
