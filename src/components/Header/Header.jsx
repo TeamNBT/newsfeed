@@ -4,23 +4,23 @@ import { Button } from '../Button';
 
 const Header = () => {
   return (
-    <StyledHeader>
-      <StyledContents>
-        <StyledLink href="/">
+    <StHeader>
+      <StContents>
+        <StLink href="/">
           ✍🏻{' '}
-          <StyledHeading>
-            <StyleStrong>Blood</StyleStrong>folio
-          </StyledHeading>
-        </StyledLink>
-        <Button variant="secondary" rounded>
-          로그인/회원가입
+          <StHeading>
+            <StStrong>Blood</StStrong>folio
+          </StHeading>
+        </StLink>
+        <Button variant="secondary" href="/profile" rounded>
+          내 프로필
         </Button>
-      </StyledContents>
-    </StyledHeader>
+      </StContents>
+    </StHeader>
   );
 };
 
-const StyledHeader = styled.header`
+const StHeader = styled.header`
   height: 118px;
   background-color: var(--color-base-background);
   position: sticky;
@@ -28,7 +28,7 @@ const StyledHeader = styled.header`
   z-index: 10;
 `;
 
-const StyledContents = styled.div`
+const StContents = styled.div`
   max-width: var(--width-max);
   margin: 0 auto;
   display: flex;
@@ -37,11 +37,11 @@ const StyledContents = styled.div`
   height: 100%;
 `;
 
-const StyleStrong = styled.strong`
+const StStrong = styled.strong`
   font-weight: 600;
 `;
 
-const StyledLink = styled(Link)`
+const StLink = styled(Link)`
   color: var(--color-white);
   height: 100%;
   display: flex;
@@ -49,7 +49,7 @@ const StyledLink = styled(Link)`
   white-space: break-spaces;
 `;
 
-const StyledHeading = styled.h1`
+const StHeading = styled.h1`
   font-size: 20px;
   font-weight: 300;
 `;
