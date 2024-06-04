@@ -1,3 +1,4 @@
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { e11yHidden, ellipsisStyle } from '@/styles/utils';
 import { Button } from '../Button';
@@ -10,6 +11,16 @@ const user = {
 };
 
 const ProfileSidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation(); // 현재 경로를 가져옴
+
+  const GoLogin = () => {
+    if (location.pathname !== '/login') {
+      // 현재 경로가 /Login이 아닌 경우에만 이동
+      navigate('/login');
+    }
+  };
+
   return (
     <StAside>
       <StProfile>
@@ -33,7 +44,7 @@ const ProfileSidebar = () => {
           <StContent>{user.introduction}</StContent>
         </StIntroduction>
       </StProfile>
-      <Button type="link" size="medium" fullWidth>
+      <Button onClick={GoLogin} type="link" size="medium" fullWidth>
         가입하고 포트폴리오 올리기
       </Button>
     </StAside>
