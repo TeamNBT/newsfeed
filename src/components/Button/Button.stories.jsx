@@ -33,7 +33,7 @@ export default {
     },
     type: {
       control: 'text',
-      description: '버튼의 타입을 지정합니다.<br/>💎 (button, submit, reset)'
+      description: '버튼의 타입을 지정합니다.<br/>💎 (button / submit / reset)'
     },
     fullWidth: {
       control: 'boolean',

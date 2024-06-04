@@ -25,7 +25,7 @@ export default {
     },
     variant: {
       control: 'select',
-      description: '텍스트의 크기를 지정합니다.',
+      description: '텍스트의 크기를 지정합니다.<br/>💎 (13px / 14px / 15px / 16px / 20px)',
       options: ['typography1', 'typography2', 'typography3', 'typography4', 'typography5']
     }
   }

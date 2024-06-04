@@ -1,5 +1,6 @@
-import { Home } from '@/pages';
+import { Favorites, Home, Profile } from '@/pages';
 import Layout from '@/components/Layout';
+import ProfileTabs from '@/components/ProfileTabs';
 
 export const RouterInfo = [
   {
@@ -9,6 +10,20 @@ export const RouterInfo = [
       {
         index: true,
         element: <Home />
+      },
+      {
+        path: '/profile',
+        element: <ProfileTabs />,
+        children: [
+          {
+            index: true,
+            element: <Profile />
+          },
+          {
+            path: '/profile/favorites',
+            element: <Favorites />
+          }
+        ]
       }
     ]
   }

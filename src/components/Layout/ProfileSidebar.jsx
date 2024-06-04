@@ -11,36 +11,36 @@ const user = {
 
 const ProfileSidebar = () => {
   return (
-    <StyledAside>
-      <StyledProfile>
-        <StyledRow>
-          <StyledThumbnail>
-            <StyledImageBox>
-              <StyledImage src={user.avatar} alt={user.name} />
-            </StyledImageBox>
-            <StyledButton type="button">
-              <StyledIcon />
-              <StyledHiddenText>프로필 수정하기</StyledHiddenText>
-            </StyledButton>
-          </StyledThumbnail>
-          <StyledTextContent>
-            <StyledName>{user.name}</StyledName>
-            <StyledJob>{user.job}</StyledJob>
-          </StyledTextContent>
-        </StyledRow>
-        <StyledIntroduction>
-          <StyledTitle>소개</StyledTitle>
-          <StyledContent>{user.introduction}</StyledContent>
-        </StyledIntroduction>
-      </StyledProfile>
+    <StAside>
+      <StProfile>
+        <StRow>
+          <StThumbnail>
+            <StImageBox>
+              <StImage src={user.avatar} alt={user.name} />
+            </StImageBox>
+            <StButton type="button">
+              <StIcon />
+              <StHiddenText>프로필 수정하기</StHiddenText>
+            </StButton>
+          </StThumbnail>
+          <StTextContent>
+            <StName>{user.name}</StName>
+            <StJob>{user.job}</StJob>
+          </StTextContent>
+        </StRow>
+        <StIntroduction>
+          <StTitle>소개</StTitle>
+          <StContent>{user.introduction}</StContent>
+        </StIntroduction>
+      </StProfile>
       <Button type="link" size="medium" fullWidth>
         가입하고 포트폴리오 올리기
       </Button>
-    </StyledAside>
+    </StAside>
   );
 };
 
-const StyledAside = styled.aside`
+const StAside = styled.aside`
   width: 320px;
   display: flex;
   flex-direction: column;
@@ -51,19 +51,19 @@ const StyledAside = styled.aside`
   z-index: 10;
 `;
 
-const StyledProfile = styled.div`
+const StProfile = styled.div`
   background-color: var(--color-white);
   border-radius: 12px;
   padding: 24px 16px;
 `;
 
-const StyledRow = styled.div`
+const StRow = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
 `;
 
-const StyledImageBox = styled.div`
+const StImageBox = styled.div`
   width: 82px;
   height: 82px;
   border-radius: 50%;
@@ -71,17 +71,17 @@ const StyledImageBox = styled.div`
   flex-shrink: 0;
 `;
 
-const StyledImage = styled.img`
+const StImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
 `;
 
-const StyledThumbnail = styled.div`
+const StThumbnail = styled.div`
   position: relative;
 `;
 
-const StyledButton = styled.button`
+const StButton = styled.button`
   position: absolute;
   bottom: 0;
   right: 1px;
@@ -96,25 +96,25 @@ const StyledButton = styled.button`
   justify-content: center;
 `;
 
-const StyledIcon = styled.span`
+const StIcon = styled.span`
   display: flex;
   width: 14px;
   height: 20px;
   background: url(src/assets/images/common/pencil.png) no-repeat center center / contain;
 `;
 
-const StyledHiddenText = styled.span`
+const StHiddenText = styled.span`
   ${e11yHidden};
 `;
 
-const StyledTextContent = styled.div`
+const StTextContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 3px;
   flex-grow: 1;
 `;
 
-const StyledName = styled.strong`
+const StName = styled.strong`
   font-size: 15px;
   font-weight: 600;
   color: var(--color-black);
@@ -122,7 +122,7 @@ const StyledName = styled.strong`
   ${ellipsisStyle(1)};
 `;
 
-const StyledJob = styled.span`
+const StJob = styled.span`
   font-size: 13px;
   font-weight: 500;
   color: #777777;
@@ -130,21 +130,21 @@ const StyledJob = styled.span`
   ${ellipsisStyle(1)};
 `;
 
-const StyledIntroduction = styled.div`
+const StIntroduction = styled.div`
   margin-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 `;
 
-const StyledTitle = styled.div`
+const StTitle = styled.div`
   font-size: 14px;
   font-weight: 600;
   color: var(--color-black);
   line-height: 1.4;
 `;
 
-const StyledContent = styled.div`
+const StContent = styled.div`
   font-size: 13px;
   font-weight: 600;
   color: #777777;
