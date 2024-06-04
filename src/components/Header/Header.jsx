@@ -1,18 +1,31 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '../Button';
 
 const Header = () => {
+  const navigate = useNavigate();  
+  const location = useLocation(); // 현재 경로를 가져옴
+
+  const GoLogin = () => {
+    if (location.pathname !== '/Login') { // 현재 경로가 /Login이 아닌 경우에만 이동
+      navigate("/Login");
+    }
+  };
+
   return (
     <StyledHeader>
       <StyledContents>
-        <StyledLink href="/">
+        <StyledLink to="/">
           ✍🏻{' '}
           <StyledHeading>
             <StyleStrong>Blood</StyleStrong>folio
           </StyledHeading>
         </StyledLink>
-        <Button variant="secondary" rounded>
+        <Button 
+          onClick={GoLogin}
+          variant="secondary"
+          rounded
+        >
           로그인/회원가입
         </Button>
       </StyledContents>
