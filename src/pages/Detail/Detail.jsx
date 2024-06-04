@@ -1,5 +1,5 @@
-import Comment from './Comment';
 import styled from 'styled-components';
+import Comment from './Comment';
 
 const userPosts = {
   main: 'Sqruce',

@@ -1,7 +1,7 @@
-import { Button } from '@/components/Button';
-import supabase from '@/supabase/supabaseClient';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { Button } from '@/components/Button';
+import supabase from '@/supabase/supabaseClient';
 
 const userComment = {
   img: 'src/assets/images/common/user.png',
