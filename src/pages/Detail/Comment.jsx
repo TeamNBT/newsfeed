@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@/components/Button';
 import supabase from '@/supabase/supabaseClient';
@@ -9,64 +9,60 @@ const userComment = {
 };
 
 const Comment = () => {
-  const [content, setContent] = useState('');
+  const contentRef = useRef('');
   const [comment, setComment] = useState([]);
 
-  const onContent = (e) => {
-    setContent(e.target.value);
+  const onClick = async () => {
+    const content = contentRef.current.value;
+    const { error } = await supabase.from('comments').insert({
+      content
+    });
+    if (error) {
+      alert('시스템 오류로 댓글을 가져오지 못했어요, 다시 불러오려면 새로고침해주세요');
+    } else {
+      alert('댓글입력이 완료 되었어요');
+      setComment([...comment, content]);
+    }
   };
+
+  const handleDelete = async (userId) => {
+    const { error } = await supabase.from('comments').delete().eq('author', userId);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase.from('comments').select('*');
       if (error) {
-        console.log('error', error);
+        alert('시스템 오류로 댓글을 작성하지 못했어요, 다시 작성해주세요');
       } else {
         setComment(data);
-        console.log(data);
       }
     };
     fetchData();
   }, []);
 
-  const onClick = async () => {
-    const { data, error } = await supabase.from('comments').insert({
-      content
-    });
-    if (error) {
-      console.log('error', error);
-    } else {
-      alert('댓글입력이 완료되었습니다.');
-      console.log('data 저장해', data);
-    }
-  };
-
-  const handleDelete = async (userId) => {
-    const { error } = await supabase.from('comments').delete().eq('auther', userId);
-  };
   return (
-    <>
-      <StComment>
-        <StCommentTextBox placeholder="댓글을 입력해주세요" value={content} onChange={onContent} />
-        <Button rounded variant="secondary" onClick={onClick}>
-          입력
-        </Button>
-        {comment.map((user) => {
-          return (
-            <StCommentWindow key={user.id}>
-              <StUserImg src={userComment.img} />
-              <StUser>
-                <StUserName>{userComment.name}</StUserName>
-                <StCommentText>{user.content}</StCommentText>
-                <StBtn>
-                  <StRetouch>수정</StRetouch>
-                  <StDelete onClick={() => handleDelete(user.auther)}>삭제</StDelete>
-                </StBtn>
-              </StUser>
-            </StCommentWindow>
-          );
-        })}
-      </StComment>
-    </>
+    <StCommentTextarea>
+      <StCommentTextBox placeholder="댓글을 입력해주세요" ref={contentRef} />
+      <Button rounded variant="secondary" onClick={onClick}>
+        입력
+      </Button>
+      {comment.map((user) => {
+        return (
+          <StCommentWindow key={user.id}>
+            <StUserImg src={userComment.img} />
+            <StUser>
+              <StUserName>{userComment.name}</StUserName>
+              <StCommentText>{user.content}</StCommentText>
+              <StBtn>
+                <StRetouch>수정</StRetouch>
+                <StDelete onClick={() => handleDelete(user.author)}>삭제</StDelete>
+              </StBtn>
+            </StUser>
+          </StCommentWindow>
+        );
+      })}
+    </StCommentTextarea>
   );
 };
 
@@ -81,9 +77,7 @@ const StCommentTextBox = styled.textarea`
   resize: none;
 `;
 
-const StComment = styled.div`
-  align-self: stretch;
-  flex-grow: 0;
+const StCommentTextarea = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -95,9 +89,6 @@ const StComment = styled.div`
 const StCommentWindow = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
   gap: 24px;
   margin-top: 40px;
 `;
@@ -107,7 +98,9 @@ const StUserImg = styled.img`
   height: 62px;
   border-radius: 50%;
   overflow: hidden;
+  object-fit: cover;
 `;
+
 const StUser = styled.div`
   width: 100%;
   display: flex;
