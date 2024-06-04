@@ -1,31 +1,70 @@
 import { Button } from '@/components/Button';
+import supabase from '@/supabase/supabaseClient';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const userComment = {
   img: 'src/assets/images/common/user.png',
-  name: 'mari',
-  comment: '댓글입니다.'
+  name: 'mari'
 };
 
 const Comment = () => {
+  const [content, setContent] = useState('');
+  const [comment, setComment] = useState([]);
+
+  const onContent = (e) => {
+    setContent(e.target.value);
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.from('comments').select('*');
+      if (error) {
+        console.log('error', error);
+      } else {
+        setComment(data);
+        console.log(data);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const onClick = async () => {
+    const { data, error } = await supabase.from('comments').insert({
+      content
+    });
+    if (error) {
+      console.log('error', error);
+    } else {
+      alert('댓글입력이 완료되었습니다.');
+      console.log('data 저장해', data);
+    }
+  };
+
+  const handleDelete = async (userId) => {
+    const { error } = await supabase.from('comments').delete().eq('auther', userId);
+  };
   return (
     <>
       <StComment>
-        <StCommentTextBox placeholder="댓글을 입력해주세요" />
-        <Button rounded variant="secondary">
-          버튼
+        <StCommentTextBox placeholder="댓글을 입력해주세요" value={content} onChange={onContent} />
+        <Button rounded variant="secondary" onClick={onClick}>
+          입력
         </Button>
-        <StCommentWindow>
-          <StUserImg src={userComment.img} />
-          <StUser>
-            <StUserName>{userComment.name}</StUserName>
-            <StCommentText>{userComment.comment}</StCommentText>
-            <StBtn>
-              <StRetouch>수정</StRetouch>
-              <StDelete>삭제</StDelete>
-            </StBtn>
-          </StUser>
-        </StCommentWindow>
+        {comment.map((user) => {
+          return (
+            <StCommentWindow key={user.id}>
+              <StUserImg src={userComment.img} />
+              <StUser>
+                <StUserName>{userComment.name}</StUserName>
+                <StCommentText>{user.content}</StCommentText>
+                <StBtn>
+                  <StRetouch>수정</StRetouch>
+                  <StDelete onClick={() => handleDelete(user.auther)}>삭제</StDelete>
+                </StBtn>
+              </StUser>
+            </StCommentWindow>
+          );
+        })}
       </StComment>
     </>
   );
@@ -38,7 +77,7 @@ const StCommentTextBox = styled.textarea`
   height: 100px;
   padding: 16px 21px;
   border-radius: 12px;
-  border: solid 1px #383838;
+  border: solid 1px var(--color-border);
   resize: none;
 `;
 
@@ -66,13 +105,14 @@ const StCommentWindow = styled.div`
 const StUserImg = styled.img`
   width: 62px;
   height: 62px;
+  border-radius: 50%;
+  overflow: hidden;
 `;
 const StUser = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 0;
 `;
 
 const StUserName = styled.h4`
@@ -81,14 +121,14 @@ const StUserName = styled.h4`
   font-size: 15px;
   line-height: 1.4;
   text-align: left;
-  color: #fff;
+  color: var(--color-white);
 `;
 
 const StCommentText = styled.p`
   font-size: 15px;
   line-height: 1.4;
   text-align: left;
-  color: #999;
+  color: var(--color-foreground);
 `;
 
 const StBtn = styled.div`
@@ -100,12 +140,12 @@ const StBtn = styled.div`
 const StDelete = styled.button`
   font-size: 14px;
   line-height: 1.4;
-  color: #999;
+  color: var(--color-foreground);
 `;
 const StRetouch = styled.button`
   font-size: 14px;
   line-height: 1.4;
-  color: #999;
+  color: var(--color-foreground);
 `;
 
 export default Comment;
