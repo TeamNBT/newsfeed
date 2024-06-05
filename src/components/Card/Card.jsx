@@ -1,31 +1,34 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
 
-const Card = () => {
+const Card = ({ feed }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   return (
     <StCard>
-      <StImgBox>
-        <StImg src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREDxwO6rYgn8oqacoaavErgjKZo9KG3PaPig&s" />
-      </StImgBox>
-      <StHeader>
-        <StTypoGroupHStack>
-          <StTitle>안녕하세요 안녕 안녕</StTitle>
-          <StDivideBar />
-          <StAuthor>mari @스파르타 코딩 클럽</StAuthor>
-        </StTypoGroupHStack>
-        <StLikeButton onClick={() => setIsLiked((prev) => !prev)}>
-          <StLikeImg
-            src={
-              isLiked
-                ? 'src/assets/images/common/ic_general_like_fill.svg'
-                : 'src/assets/images/common/ic_general_like.svg'
-            }
-          ></StLikeImg>
-        </StLikeButton>
-      </StHeader>
+      <StLink to={`/detail/${feed.id}`}>
+        <StImgBox>
+          <StImg src={feed.thumbnail} />
+        </StImgBox>
+        <StHeader>
+          <StTypoGroupHStack>
+            <StTitle>{feed.title}</StTitle>
+            <StDivideBar />
+            <StAuthor>{feed.author}</StAuthor>
+          </StTypoGroupHStack>
+          <StLikeButton onClick={() => setIsLiked((prev) => !prev)}>
+            <StLikeImg
+              src={
+                isLiked
+                  ? 'src/assets/images/common/ic_general_like_fill.svg'
+                  : 'src/assets/images/common/ic_general_like.svg'
+              }
+            ></StLikeImg>
+          </StLikeButton>
+        </StHeader>
+      </StLink>
     </StCard>
   );
 };
@@ -45,6 +48,9 @@ const StTypoGroupHStack = styled.div`
 
 const StCard = styled.div`
   width: 100%;
+`;
+
+const StLink = styled(Link)`
   display: flex;
   flex-direction: column;
   gap: 22px;
