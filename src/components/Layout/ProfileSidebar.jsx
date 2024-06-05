@@ -12,11 +12,10 @@ const user = {
 
 const ProfileSidebar = () => {
   const navigate = useNavigate();
-  const location = useLocation(); // 현재 경로를 가져옴
+  const location = useLocation(); 
 
   const GoLogin = () => {
     if (location.pathname !== '/login') {
-      // 현재 경로가 /Login이 아닌 경우에만 이동
       navigate('/login');
     }
   };

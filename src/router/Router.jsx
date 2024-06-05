@@ -1,6 +1,6 @@
 import { Favorites, Home, Profile } from '@/pages';
-import JoinLayout from '@/pages/Join/JoinLayout';
-import LoginLayout from '@/pages/Login/LoginLayout';
+import Join from '@/pages/join/Join';
+import Login from '@/pages/login/Login';
 import Layout from '@/components/Layout';
 import ProfileTabs from '@/components/ProfileTabs';
 
@@ -31,10 +31,10 @@ export const RouterInfo = [
   },
   {
     path: '/join',
-    element: <JoinLayout />
+    element: <Join />
   },
   {
     path: '/login',
-    element: <LoginLayout />
+    element: <Login />
   }
 ];
