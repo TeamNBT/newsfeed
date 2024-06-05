@@ -12,6 +12,9 @@ const Home = () => {
       const { data, error } = await supabase.from('feeds').select();
 
       setFeeds(data);
+      if (error) {
+        console.log('error =>', error);
+      }
     };
     fetchFeeds();
   }, []);

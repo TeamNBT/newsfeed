@@ -2,9 +2,27 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
+import supabase from '@/supabase/supabaseClient';
 
 const Card = ({ feed }) => {
   const [isLiked, setIsLiked] = useState(false);
+  const liked = () => {
+    setIsLiked(!isLiked);
+    handleAdd();
+  };
+
+  const handleAdd = async () => {
+    const { data, error } = await supabase.from('favorites').insert({
+      feed_id: feed.id,
+      author: feed.author
+    });
+
+    if (error) {
+      console.log('error =>', error);
+    } else {
+      console.log('data =>', data);
+    }
+  };
 
   return (
     <StCard>
@@ -12,23 +30,29 @@ const Card = ({ feed }) => {
         <StImgBox>
           <StImg src={feed.thumbnail} />
         </StImgBox>
-        <StHeader>
+      </StLink>
+      <StHeader>
+        <StLink to={`/detail/${feed.id}`}>
           <StTypoGroupHStack>
             <StTitle>{feed.title}</StTitle>
             <StDivideBar />
             <StAuthor>{feed.author}</StAuthor>
           </StTypoGroupHStack>
-          <StLikeButton onClick={() => setIsLiked((prev) => !prev)}>
+        </StLink>
+        <StLikeButton>
+          {isLiked ? (
             <StLikeImg
-              src={
-                isLiked
-                  ? 'src/assets/images/common/ic_general_like_fill.svg'
-                  : 'src/assets/images/common/ic_general_like.svg'
-              }
+              onClick={liked}
+              src={'src/assets/images/common/ic_general_like_fill.svg'}
             ></StLikeImg>
-          </StLikeButton>
-        </StHeader>
-      </StLink>
+          ) : (
+            <StLikeImg
+              onClick={liked}
+              src={'src/assets/images/common/ic_general_like.svg'}
+            ></StLikeImg>
+          )}
+        </StLikeButton>
+      </StHeader>
     </StCard>
   );
 };
@@ -48,12 +72,13 @@ const StTypoGroupHStack = styled.div`
 
 const StCard = styled.div`
   width: 100%;
-`;
-
-const StLink = styled(Link)`
   display: flex;
   flex-direction: column;
   gap: 22px;
+`;
+
+const StLink = styled(Link)`
+  display: block;
 `;
 
 const StTitle = styled.span`
