@@ -14,14 +14,28 @@ const Comment = () => {
 
   const onClick = async () => {
     const content = contentRef.current.value;
-    const { error } = await supabase.from('comments').insert({
-      content
-    });
+    const { data, error } = await supabase
+      .from('comments')
+      .insert({
+        content
+      })
+      .select();
     if (error) {
       alert('시스템 오류로 댓글을 가져오지 못했어요, 다시 불러오려면 새로고침해주세요');
+    } else if (!content) {
+      alert('댓글을 입력하세요');
     } else {
       alert('댓글입력이 완료 되었어요');
-      setComment([...comment, content]);
+    }
+    setComment([...comment, ...data]);
+    contentRef.current.value = '';
+  };
+
+  const onClickRetouch = () => {
+    if (comment === comment.id) {
+      console.log('수정가능');
+    } else {
+      alert('아이디를 확인해주세요');
     }
   };
 
@@ -55,7 +69,7 @@ const Comment = () => {
               <StUserName>{userComment.name}</StUserName>
               <StCommentText>{user.content}</StCommentText>
               <StBtn>
-                <StRetouch>수정</StRetouch>
+                <StRetouch onClick={onClickRetouch}>수정</StRetouch>
                 <StDelete onClick={() => handleDelete(user.author)}>삭제</StDelete>
               </StBtn>
             </StUser>
