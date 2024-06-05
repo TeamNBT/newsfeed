@@ -40,7 +40,6 @@ const StRetouch = styled.div`
 
 const StForm = styled.div`
   width: 400px;
-  height: 400px;
   background-color: var(--color-white);
   border-radius: 12px;
   padding: 36px 22px 30px;
