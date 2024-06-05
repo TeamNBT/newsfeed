@@ -12,9 +12,18 @@ const Comment = () => {
   const contentRef = useRef('');
   const [comment, setComment] = useState([]);
 
+  const fetchData = async () => {
+    const { data, error } = await supabase.from('comments').select('*');
+    if (error) {
+      alert('시스템 오류로 댓글을 작성하지 못했어요, 다시 작성해주세요');
+    }
+
+    setComment(data);
+  };
+
   const onClick = async () => {
     const content = contentRef.current.value;
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('comments')
       .insert({
         content
@@ -27,7 +36,7 @@ const Comment = () => {
     } else {
       alert('댓글입력이 완료 되었어요');
     }
-    setComment([...comment, ...data]);
+    await fetchData();
     contentRef.current.value = '';
   };
 
@@ -44,14 +53,6 @@ const Comment = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase.from('comments').select('*');
-      if (error) {
-        alert('시스템 오류로 댓글을 작성하지 못했어요, 다시 작성해주세요');
-      } else {
-        setComment(data);
-      }
-    };
     fetchData();
   }, []);
 
