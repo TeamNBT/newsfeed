@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Button } from '@/components/Button';
 import supabase from '@/supabase/supabaseClient';
+import Retouch from './Retouch';
 
 const userComment = {
   img: 'src/assets/images/common/user.png',
@@ -10,11 +11,22 @@ const userComment = {
 
 const Comment = () => {
   const contentRef = useRef('');
-  const [comment, setComment] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [selectedId, setSelectedId] = useState('');
+
+  const fetchData = async () => {
+    const { data, error } = await supabase.from('comments').select('*');
+    if (error) {
+      alert('시스템 오류로 댓글을 작성하지 못했어요, 다시 작성해주세요');
+    }
+
+    setComments(data);
+  };
 
   const onClick = async () => {
     const content = contentRef.current.value;
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('comments')
       .insert({
         content
@@ -27,16 +39,13 @@ const Comment = () => {
     } else {
       alert('댓글입력이 완료 되었어요');
     }
-    setComment([...comment, ...data]);
+    await fetchData();
     contentRef.current.value = '';
   };
 
-  const onClickRetouch = () => {
-    if (comment === comment.id) {
-      console.log('수정가능');
-    } else {
-      alert('아이디를 확인해주세요');
-    }
+  const onClickRetouch = (commentId) => {
+    setModal(true);
+    setSelectedId(commentId);
   };
 
   const handleDelete = async (userId) => {
@@ -44,16 +53,8 @@ const Comment = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase.from('comments').select('*');
-      if (error) {
-        alert('시스템 오류로 댓글을 작성하지 못했어요, 다시 작성해주세요');
-      } else {
-        setComment(data);
-      }
-    };
     fetchData();
-  }, []);
+  }, [modal]);
 
   return (
     <StCommentTextarea>
@@ -61,21 +62,22 @@ const Comment = () => {
       <Button rounded variant="secondary" onClick={onClick}>
         입력
       </Button>
-      {comment.map((user) => {
+      {comments.map((comment) => {
         return (
-          <StCommentWindow key={user.id}>
+          <StCommentWindow key={comment.id}>
             <StUserImg src={userComment.img} />
             <StUser>
               <StUserName>{userComment.name}</StUserName>
-              <StCommentText>{user.content}</StCommentText>
+              <StCommentText>{comment.content}</StCommentText>
               <StBtn>
-                <StRetouch onClick={onClickRetouch}>수정</StRetouch>
-                <StDelete onClick={() => handleDelete(user.author)}>삭제</StDelete>
+                <StRetouch onClick={() => onClickRetouch(comment.author)}>수정</StRetouch>
+                <StDelete onClick={() => handleDelete(comment.author)}>삭제</StDelete>
               </StBtn>
             </StUser>
           </StCommentWindow>
         );
       })}
+      {modal && <Retouch userId={selectedId} fetchData={fetchData} setModal={setModal} />}
     </StCommentTextarea>
   );
 };

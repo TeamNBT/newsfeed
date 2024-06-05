@@ -1,12 +1,25 @@
+import { useRef } from 'react';
 import styled from 'styled-components';
+import supabase from '@/supabase/supabaseClient';
 
-const Retouch = () => {
+const Retouch = ({ userId, setModal }) => {
+  const ChangeRef = useRef('');
+
+  const handleUpdate = async () => {
+    const changeValue = ChangeRef.current.value;
+    const result = await supabase
+      .from('comments')
+      .update({ content: changeValue })
+      .eq('author', userId);
+    setModal(false);
+  };
+
   return (
     <StRetouch>
       <StForm>
         <h4>댓글을 수정해주세요</h4>
-        <StRetouchText />
-        <StRetouchBtn>수 정 하 기</StRetouchBtn>
+        <StRetouchText ref={ChangeRef} />
+        <StRetouchBtn onClick={handleUpdate}>수 정 하 기</StRetouchBtn>
       </StForm>
     </StRetouch>
   );
@@ -25,10 +38,10 @@ const StRetouch = styled.div`
   justify-content: center;
 `;
 
-const StForm = styled.form`
+const StForm = styled.div`
   width: 400px;
   height: 400px;
-  background-color: white;
+  background-color: var(--color-white);
   border-radius: 12px;
   padding: 36px 22px 30px;
   position: relative;
