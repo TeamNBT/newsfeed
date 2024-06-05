@@ -2,7 +2,7 @@ import { getUserThunk } from '@/redux/auth/authThunk';
 import store from '@/redux/config/configStore';
 import supabase from '@/supabase/supabaseClient';
 
-const commonLoader = async () => {
+const commonLoader = () => {
   supabase.auth.onAuthStateChange((event, session) => {
     if (!session) return;
 
