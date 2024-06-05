@@ -50,6 +50,12 @@ const Comment = () => {
 
   const handleDelete = async (userId) => {
     const { error } = await supabase.from('comments').delete().eq('author', userId);
+   if (error) {
+      alert('ID를 확인해주세요');
+    } else {
+      alert('댓글이 삭제되었어요');
+    }
+    fetchData();
   };
 
   useEffect(() => {
