@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Button } from '../Button';
 import {
   StButton,
@@ -18,6 +19,7 @@ import {
 } from './styles';
 import { DEFAULT_AVATAR } from '.';
 
+
 const UserProfile = () => {
   const userInfo = useSelector(({ auth }) => auth.data?.userInfo) || {};
 
@@ -25,15 +27,17 @@ const UserProfile = () => {
     <>
       <StProfile>
         <StRow>
-          <StThumbnail>
-            <StImageBox>
-              <StImage src={userInfo.avatar || DEFAULT_AVATAR} alt={userInfo.displayName} />
-            </StImageBox>
-            <StButton type="button">
-              <StIcon />
-              <StHiddenText>프로필 수정하기</StHiddenText>
-            </StButton>
-          </StThumbnail>
+        <StThumbnail>
+  <StImageBox>
+    <StImage src={userInfo.avatar || DEFAULT_AVATAR} alt={userInfo.displayName} />
+  </StImageBox>
+  <Link to="/Modifyprofile">
+    <StButton type="button">
+      <StIcon />
+      <StHiddenText>프로필 수정하기</StHiddenText>
+    </StButton>
+  </Link>
+</StThumbnail>
           <StTextContent>
             <StName>{userInfo.displayName}</StName>
             <StJob>{userInfo.job}</StJob>
