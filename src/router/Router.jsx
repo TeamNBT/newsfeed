@@ -29,7 +29,7 @@ const routes = [
         ]
       },
       {
-        path: '/detail',
+        path: '/detail/:id',
         element: <Detail />
       }
     ]
