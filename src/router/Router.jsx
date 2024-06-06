@@ -1,11 +1,14 @@
-import { Favorites, Home, Profile, Detail } from '@/pages';
+import { createBrowserRouter } from 'react-router-dom';
+import { Favorites, Home, Profile, Signup, Signin, Detail } from '@/pages';
 import Layout from '@/components/Layout';
+import commonLoader from '@/components/Layout/commonLoader';
 import ProfileTabs from '@/components/ProfileTabs';
 
-export const RouterInfo = [
+const routes = [
   {
     path: '/',
     element: <Layout />,
+    loader: commonLoader,
     children: [
       {
         index: true,
@@ -30,5 +33,15 @@ export const RouterInfo = [
         element: <Detail />
       }
     ]
+  },
+  {
+    path: '/signin',
+    element: <Signin />
+  },
+  {
+    path: '/signup',
+    element: <Signup />
   }
 ];
+
+export const router = createBrowserRouter(routes);
