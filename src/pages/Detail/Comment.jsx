@@ -4,14 +4,13 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import useShallowEqualSelector from '@/hooks/useShallowEqualSelector';
 import { Button } from '@/components/Button';
+import DEFAULT_AVATAR from '@/assets/images/common/user.png';
 import {
   createCommentThunk,
   deleteCommentThunk,
   getCommentsThunk
 } from '@/redux/comments/commentThunk';
 import Retouch from './Retouch';
-
-const DEFAULT_AVATAR = '/src/assets/images/common/user.png';
 
 const Comment = () => {
   const { id: feedId } = useParams();

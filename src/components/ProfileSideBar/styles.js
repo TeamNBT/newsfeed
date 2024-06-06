@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ellipsisStyle, e11yHidden } from '@/styles/utils';
+import pencil from '@/assets/images/common/pencil.png';
 
 export const StProfile = styled.div`
   background-color: var(--color-white);
@@ -50,7 +51,7 @@ export const StIcon = styled.span`
   display: flex;
   width: 14px;
   height: 20px;
-  background: url(/src/assets/images/common/pencil.png) no-repeat center center / contain;
+  background: url(${pencil}) no-repeat center center / contain;
 `;
 
 export const StHiddenText = styled.span`
