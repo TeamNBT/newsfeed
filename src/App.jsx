@@ -1,8 +1,6 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 import GlobalStyles from '@/styles/GlobalStyles';
-import { RouterInfo } from '@/router/Router';
-
-const router = createBrowserRouter(RouterInfo);
+import { router } from './router/Router';
 
 const App = () => {
   return (
