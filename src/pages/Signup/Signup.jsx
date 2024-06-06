@@ -52,6 +52,7 @@ const Signup = () => {
 
     if (result.error) return;
 
+    alert('회원가입이 완료되었어요, 이메일 인증을 완료해주세요');
     navigate('/');
   };
 

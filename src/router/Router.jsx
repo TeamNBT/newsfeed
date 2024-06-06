@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { authLoader, commonLoader } from '@/loader';
 import { Favorites, Home, Profile, Signup, Signin, Detail } from '@/pages';
+import EditorPage from '@/pages/FeedForm/EditorPage';
+import FeedsPage from '@/pages/FeedForm/FeedsPage';
 import Layout from '@/components/Layout';
 import ProfileTabs from '@/components/ProfileTabs';
-import FeedsPage from '@/pages/FeedForm/FeedsPage';
-import EditorPage from '@/pages/FeedForm/EditorPage';
 
 const routes = [
   {
@@ -47,7 +47,11 @@ const routes = [
     element: <Signup />
   },
   {
-    path: '/editor',
+    path: '/editor/new',
+    element: <EditorPage />
+  },
+  {
+    path: '/editor/:id',
     element: <EditorPage />
   },
   {

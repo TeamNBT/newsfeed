@@ -1,17 +1,17 @@
-import { Button } from '@/components/Button';
-import { Editor } from '@toast-ui/react-editor';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
 import 'tui-color-picker/dist/tui-color-picker.css';
 import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
+import { Editor } from '@toast-ui/react-editor';
 import { styled } from 'styled-components';
-import supabase, { VITE_SUPABASE_URL } from '@/supabase/supabaseClient';
-import { addNewFeed, initFeed, updateExistingFeed } from '../../redux/slices/feedsSlices';
+import { Button } from '@/components/Button';
 import '@toast-ui/editor/dist/i18n/ko-kr';
+import { uploadImage } from '@/redux/feeds/feedsService';
+import { addNewFeedThunk, updateExistingFeedThunk } from '@/redux/feeds/feedsThunk';
 
 const toolbar = [
   ['heading', 'bold', 'italic', 'strike'],
@@ -19,26 +19,26 @@ const toolbar = [
   ['image', 'link']
 ];
 
-// 이미지 추출
 const getThumbnailFromContents = (contents) => {
   const imgRegex = /<img.*?src="(.*?)".*?>/g;
   const match = imgRegex.exec(contents);
   if (match && match.length > 1) {
-    return match[1]; // 첫 번째 매치된 이미지 URL 반환
+    return match[1];
   } else {
-    return null; // 이미지 URL을 찾을 수 없을 경우 null 반환
+    return null;
   }
 };
 
 const EditorPage = () => {
+  const { id } = useParams();
   const editorRef = useRef('');
   const titleRef = useRef('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const editingFeed = useSelector((state) => state.feeds.editingFeed);
+  const feed = useSelector((state) => state.feeds.feed);
   const isEditorLoading = useSelector((state) => state.feeds.isEditorLoading);
-
-  console.log('EditorPage', editingFeed);
+  const isNewPage = !id;
+  const editor = isNewPage ? {} : feed;
 
   const handleSave = () => {
     const title = titleRef.current.value;
@@ -51,34 +51,15 @@ const EditorPage = () => {
     if (!contents || contents.trim() === '<p><br></p>') {
       return alert('내용을 입력해주세요');
     }
-
     if (!thumbnail) {
       return alert('이미지는 필수로 넣어야해요');
     }
 
-    editingFeed
-      ? dispatch(
-          updateExistingFeed({ id: editingFeed.id, updates: { title, contents, thumbnail } })
-        )
-      : dispatch(addNewFeed({ title, contents, thumbnail }));
+    isNewPage
+      ? dispatch(addNewFeedThunk({ title, contents, thumbnail }))
+      : dispatch(updateExistingFeedThunk({ id, updates: { title, contents, thumbnail } }));
   };
 
-  const uploadImage = async (blob) => {
-    const { data, error } = await supabase.storage
-      .from('images')
-      .upload(`public/${Date.now()}-${blob.name}`, blob);
-
-    if (error) {
-      console.error('이미지 업로드 에러 :', error);
-      return;
-    }
-
-    const imageUrl = `${VITE_SUPABASE_URL}/storage/v1/object/public/images/${data.path}`;
-    console.log('이미지 URL:', imageUrl);
-    return imageUrl;
-  };
-
-  // 이미지 base64인코딩 변환
   const onUploadImage = async (blob, callback) => {
     const imageUrl = await uploadImage(blob);
     if (imageUrl) {
@@ -87,23 +68,9 @@ const EditorPage = () => {
   };
 
   useEffect(() => {
-    if (editingFeed) {
-      titleRef.current.value = editingFeed.title || ''; // 제목 초기화
-      // dispatch(setEditingFeed('')); // 글작성 폼 초기화
-      // editorRef.current.getInstance().getHTML('');
-    }
-  }, [editingFeed]);
-
-  useEffect(() => {
     if (!isEditorLoading) return;
-    navigate('/feeds');
+    navigate(-1);
   }, [isEditorLoading, navigate]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(initFeed());
-    };
-  }, [dispatch]);
 
   return (
     <StEditor>
@@ -112,16 +79,20 @@ const EditorPage = () => {
           뒤로가기
         </Button>
         <Button onClick={handleSave} rounded size="default" type="" variant="secondary">
-          {editingFeed ? '수정완료' : '저장'}
+          {isNewPage ? '저장' : '수정완료'}
         </Button>
-        {/* <StHeaderBtn onClick={handleSave}>{editingFeed ? '수정 완료' : '저장'}</StHeaderBtn> */}
       </StHeaderBar>
       <StTitleDiv>
-        <StTitleInput type="text" ref={titleRef} placeholder="제목을 입력해주세요!" />
+        <StTitleInput
+          type="text"
+          ref={titleRef}
+          placeholder="제목을 입력해주세요!"
+          defaultValue={editor.title || ''}
+        />
       </StTitleDiv>
       <Editor
         ref={editorRef}
-        initialValue={editingFeed ? editingFeed.contents || ' ' : ' '}
+        initialValue={editor.contents || ' '}
         placeholder="여기에 내용을 작성하세요."
         hideModeSwitch
         height="550px"
