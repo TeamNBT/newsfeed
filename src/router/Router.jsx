@@ -1,6 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { authLoader, commonLoader } from '@/loader';
-import { Favorites, Home, Profile, Signup, Signin, Detail } from '@/pages';
+import detailLoader from '@/loader/detailLoader';
+import homeLoader from '@/loader/homeLoader';
+import { Favorites, Home, Profile, Signup, Signin, Detail, Editor } from '@/pages';
 import Layout from '@/components/Layout';
 import ProfileTabs from '@/components/ProfileTabs';
 
@@ -12,6 +14,7 @@ const routes = [
     children: [
       {
         index: true,
+        loader: homeLoader,
         element: <Home />
       },
       {
@@ -30,6 +33,7 @@ const routes = [
       },
       {
         path: '/detail/:id',
+        loader: detailLoader,
         element: <Detail />
       }
     ]
@@ -43,6 +47,14 @@ const routes = [
     path: '/signup',
     loader: authLoader,
     element: <Signup />
+  },
+  {
+    path: '/editor/new',
+    element: <Editor />
+  },
+  {
+    path: '/editor/:id',
+    element: <Editor />
   }
 ];
 

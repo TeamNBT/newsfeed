@@ -44,7 +44,7 @@ const UserProfile = () => {
           <StContent>{userInfo.introduction}</StContent>
         </StIntroduction>
       </StProfile>
-      <Button href="/editor" size="medium" fullWidth>
+      <Button href="/editor/new" size="medium" fullWidth>
         나의 포트폴리오도 올리기
       </Button>
     </>

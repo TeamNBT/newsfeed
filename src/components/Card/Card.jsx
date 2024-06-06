@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
+import { GeneralLikeFillIcon, GeneralLikeIcon } from '@/svg';
 import supabase from '@/supabase/supabaseClient';
 
 const Card = ({ feed }) => {
@@ -40,17 +41,7 @@ const Card = ({ feed }) => {
           </StTypoGroupHStack>
         </StLink>
         <StLikeButton>
-          {isLiked ? (
-            <StLikeImg
-              onClick={liked}
-              src={'src/assets/images/common/ic_general_like_fill.svg'}
-            ></StLikeImg>
-          ) : (
-            <StLikeImg
-              onClick={liked}
-              src={'src/assets/images/common/ic_general_like.svg'}
-            ></StLikeImg>
-          )}
+          {isLiked ? <GeneralLikeFillIcon onClick={liked} /> : <GeneralLikeIcon onClick={liked} />}
         </StLikeButton>
       </StHeader>
     </StCard>
@@ -116,13 +107,6 @@ const StHeader = styled.div`
   justify-content: space-between;
   gap: 22px;
   align-items: center;
-`;
-
-const StLikeImg = styled.img`
-  width: 24px;
-  height: 24px;
-  flex-grow: 0;
-  object-fit: contain;
 `;
 
 const StLikeButton = styled.button`

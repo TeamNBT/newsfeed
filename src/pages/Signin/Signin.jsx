@@ -2,8 +2,8 @@ import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import useShallowEqualSelector from '@/hooks/useShallowEqualSelector';
-import AuthHeader from '@/components/AuthHeader';
 import { Button } from '@/components/Button';
+import { AuthHeader } from '@/components/Header';
 import { Input, PasswordInput } from '@/components/Input';
 import { loginUserThunk } from '@/redux/auth/authThunk';
 
