@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
+import { authLoader, commonLoader } from '@/loader';
 import { Favorites, Home, Profile, Signup, Signin, Detail } from '@/pages';
 import Layout from '@/components/Layout';
-import commonLoader from '@/components/Layout/commonLoader';
 import ProfileTabs from '@/components/ProfileTabs';
 
 const routes = [
@@ -36,10 +36,12 @@ const routes = [
   },
   {
     path: '/signin',
+    loader: authLoader,
     element: <Signin />
   },
   {
     path: '/signup',
+    loader: authLoader,
     element: <Signup />
   }
 ];

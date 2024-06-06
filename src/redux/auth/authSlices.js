@@ -14,7 +14,12 @@ const initialState = {
 const authSlices = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    initAuth: (state) => {
+      state.loading = initialState.loading;
+      state.error = initialState.error;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUserThunk.pending, setPending)
@@ -63,6 +68,6 @@ const setRejected = (state, action) => {
   state.error = action.payload;
 };
 
-export const { logout } = authSlices.actions;
+export const { initAuth } = authSlices.actions;
 
 export default authSlices.reducer;
