@@ -3,3 +3,4 @@ export { default as Profile } from './Profile';
 export { default as Favorites } from './Favorites';
 export { default as Signin } from './Signin';
 export { default as Signup } from './Signup';
+export { default as Detail } from './Detail';
