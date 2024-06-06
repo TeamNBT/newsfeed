@@ -3,11 +3,13 @@ import {
   addNewFeedThunk,
   deleteExistingFeedThunk,
   loadFeedThunk,
+  loadFeedsThunk,
   updateExistingFeedThunk
 } from '@/redux/feeds/feedsThunk';
 
 const initialState = {
   feed: {},
+  feeds: [],
   loading: false,
   error: null,
   editingFeed: null,
@@ -78,6 +80,20 @@ const feedsSlice = createSlice({
       })
       .addCase(deleteExistingFeedThunk.rejected, (state) => {
         state.deletingFeedId = null;
+      });
+
+    builder
+      .addCase(loadFeedsThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loadFeedsThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.feeds = action.payload;
+      })
+      .addCase(loadFeedsThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   }
 });

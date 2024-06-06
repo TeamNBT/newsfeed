@@ -1,5 +1,5 @@
+import store from '@/redux/_config/configStore';
 import { initAuth } from '@/redux/auth/authSlices';
-import store from '@/redux/config/configStore';
 
 const authLoader = () => {
   store.dispatch(initAuth());

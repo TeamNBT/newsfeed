@@ -1,10 +1,10 @@
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import useIsLoginUser from '@/hooks/useIsLoginUser';
 import GuestProfile from './GuestProfile';
 import UserProfile from './UserProfile';
 
 const ProfileSideBar = () => {
-  const isLoginUser = useSelector(({ auth }) => auth.isLogin);
+  const isLoginUser = useIsLoginUser();
 
   return <StAside>{isLoginUser ? <UserProfile /> : <GuestProfile />}</StAside>;
 };

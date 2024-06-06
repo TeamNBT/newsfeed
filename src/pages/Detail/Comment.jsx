@@ -1,94 +1,119 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import useShallowEqualSelector from '@/hooks/useShallowEqualSelector';
 import { Button } from '@/components/Button';
-import supabase from '@/supabase/supabaseClient';
+import {
+  createCommentThunk,
+  deleteCommentThunk,
+  getCommentsThunk
+} from '@/redux/comments/commentThunk';
 import Retouch from './Retouch';
 
-const userComment = {
-  img: 'src/assets/images/common/user.png',
-  name: 'mari'
-};
+const DEFAULT_AVATAR = '/src/assets/images/common/user.png';
 
 const Comment = () => {
-  const contentRef = useRef('');
-  const [comments, setComments] = useState([]);
+  const { id: feedId } = useParams();
   const [modal, setModal] = useState(false);
-  const [selectedId, setSelectedId] = useState('');
+  const [selectedCommentId, setSelectedCommentId] = useState(null);
+  const dispatch = useDispatch();
+  const comments = useSelector(({ comments }) => comments.data);
+  const { userId, author, thumbnail } = useShallowEqualSelector(({ auth }) => ({
+    userId: auth.data.userId,
+    author: auth.data.userInfo.displayName,
+    thumbnail: auth.data.userInfo.thumbnail
+  }));
 
-  const fetchData = async () => {
-    const { data, error } = await supabase.from('comments').select('*');
-    if (error) {
-      alert('시스템 오류로 댓글을 작성하지 못했어요, 다시 작성해주세요');
-    }
+  const onSubmit = async (event) => {
+    event.preventDefault();
 
-    setComments(data);
-  };
+    const formData = new FormData(event.target);
+    const { content } = Object.fromEntries(formData.entries());
 
-  const onClick = async () => {
-    const content = contentRef.current.value;
-    const { error } = await supabase
-      .from('comments')
-      .insert({
-        content
-      })
-      .select();
-    if (error) {
-      alert('시스템 오류로 댓글을 가져오지 못했어요, 다시 불러오려면 새로고침해주세요');
-    } else if (!content) {
+    if (!content) {
       alert('댓글을 입력하세요');
-    } else {
-      alert('댓글입력이 완료 되었어요');
+      return;
     }
-    await fetchData();
-    contentRef.current.value = '';
+
+    const result = await dispatch(
+      createCommentThunk({
+        content,
+        feed_id: feedId,
+        user_id: userId,
+        thumbnail,
+        author
+      })
+    );
+
+    if (result.error) {
+      alert(result.error.message);
+      return;
+    }
+    await dispatch(getCommentsThunk(feedId));
+
+    alert('댓글을 작성했어요');
+    event.target.reset();
   };
 
   const onClickRetouch = (commentId) => {
     setModal(true);
-    setSelectedId(commentId);
+    setSelectedCommentId(commentId);
   };
 
-  const handleDelete = async (userId) => {
-    const { error } = await supabase.from('comments').delete().eq('author', userId);
-   if (error) {
-      alert('ID를 확인해주세요');
-    } else {
-      alert('댓글이 삭제되었어요');
+  const handleDelete = async (commentId) => {
+    const result = await dispatch(deleteCommentThunk(commentId));
+    if (result.error) {
+      alert(result.error.message);
+      return;
     }
-    fetchData();
-  };
+    alert('댓글이 삭제되었어요');
 
-  useEffect(() => {
-    fetchData();
-  }, [modal]);
+    await dispatch(getCommentsThunk(feedId));
+  };
 
   return (
-    <StCommentTextarea>
-      <StCommentTextBox placeholder="댓글을 입력해주세요" ref={contentRef} />
-      <Button rounded variant="secondary" onClick={onClick}>
-        입력
-      </Button>
-      {comments.map((comment) => {
-        return (
-          <StCommentWindow key={comment.id}>
-            <StUserImg src={userComment.img} />
-            <StUser>
-              <StUserName>{userComment.name}</StUserName>
-              <StCommentText>{comment.content}</StCommentText>
-              <StBtn>
-                <StRetouch onClick={() => onClickRetouch(comment.author)}>수정</StRetouch>
-                <StDelete onClick={() => handleDelete(comment.author)}>삭제</StDelete>
-              </StBtn>
-            </StUser>
-          </StCommentWindow>
-        );
-      })}
-      {modal && <Retouch userId={selectedId} fetchData={fetchData} setModal={setModal} />}
-    </StCommentTextarea>
+    <StCommentTextBox>
+      <StForm onSubmit={onSubmit}>
+        <StCommentTextarea name="content" placeholder="댓글을 입력해주세요" required />
+        <Button type="submit" rounded variant="secondary">
+          입력
+        </Button>
+      </StForm>
+      {comments &&
+        comments.map((comment) => {
+          const isMyComment = userId === comment.user_id;
+
+          return (
+            <StCommentWindow key={comment.id}>
+              <StUserImg src={DEFAULT_AVATAR} />
+              <StUser>
+                <StUserName>{comment.author}</StUserName>
+                <StCommentText>{comment.content}</StCommentText>
+                {isMyComment && (
+                  <StBtn>
+                    <StRetouch onClick={() => onClickRetouch(comment.id)}>수정</StRetouch>
+                    <StDelete onClick={() => handleDelete(comment.id)}>삭제</StDelete>
+                  </StBtn>
+                )}
+              </StUser>
+            </StCommentWindow>
+          );
+        })}
+      {modal && <Retouch commentId={selectedCommentId} setModal={setModal} />}
+    </StCommentTextBox>
   );
 };
 
-const StCommentTextBox = styled.textarea`
+const StForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 15px;
+`;
+
+const StCommentTextarea = styled.textarea`
   background-color: var(--color-base-background);
   color: var(--color-white);
   width: 100%;
@@ -97,15 +122,12 @@ const StCommentTextBox = styled.textarea`
   border-radius: 12px;
   border: solid 1px var(--color-border);
   resize: none;
+  font-family: inherit;
+  font-size: 15px;
 `;
 
-const StCommentTextarea = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding: 6px 16px;
-  gap: 15px;
+const StCommentTextBox = styled.div`
+  padding: 6px 0px 35px;
 `;
 
 const StCommentWindow = styled.div`
@@ -121,6 +143,7 @@ const StUserImg = styled.img`
   border-radius: 50%;
   overflow: hidden;
   object-fit: cover;
+  flex-shrink: 0;
 `;
 
 const StUser = styled.div`

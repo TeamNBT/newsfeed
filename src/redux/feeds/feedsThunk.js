@@ -1,9 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { createFeed, deleteFeed, fetchFeed, updateFeed, uploadImage } from './feedsService';
+import {
+  createFeed,
+  deleteFeed,
+  fetchFeed,
+  fetchFeeds,
+  updateFeed,
+  uploadImage
+} from './feedsServices';
 
 export const loadFeedThunk = createAsyncThunk('feed/loadFeed', async (id, thunkAPI) => {
   const feed = await fetchFeed(id, thunkAPI);
   return feed;
+});
+
+export const loadFeedsThunk = createAsyncThunk('feed/loadFeeds', async (id, thunkAPI) => {
+  const feeds = await fetchFeeds(id, thunkAPI);
+  return feeds;
 });
 
 export const addNewFeedThunk = createAsyncThunk('feed/addNewFeed', async (feed, thunkAPI) => {

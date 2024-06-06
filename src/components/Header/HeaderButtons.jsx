@@ -1,11 +1,12 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import useIsLoginUser from '@/hooks/useIsLoginUser';
 import { logoutUserThunk } from '@/redux/auth/authThunk';
 import { Button } from '../Button';
 
 const HeaderButton = () => {
   const dispatch = useDispatch();
-  const isLoginUser = useSelector(({ auth }) => auth.isLogin);
+  const isLoginUser = useIsLoginUser();
 
   const buttons = [
     { text: '내 프로필', isLogin: true, props: { href: '/profile' } },

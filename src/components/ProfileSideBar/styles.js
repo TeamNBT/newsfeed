@@ -50,7 +50,7 @@ export const StIcon = styled.span`
   display: flex;
   width: 14px;
   height: 20px;
-  background: url(src/assets/images/common/pencil.png) no-repeat center center / contain;
+  background: url(/src/assets/images/common/pencil.png) no-repeat center center / contain;
 `;
 
 export const StHiddenText = styled.span`

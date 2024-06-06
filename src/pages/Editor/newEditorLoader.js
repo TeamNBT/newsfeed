@@ -1,4 +1,4 @@
-import store from '@/redux/config/configStore';
+import store from '@/redux/_config/configStore';
 import { initFeed } from '@/redux/feeds/feedsSlices';
 
 const newEditorLoader = () => {

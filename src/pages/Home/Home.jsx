@@ -1,25 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import SectionHeaderHook from '@/pages/Home/SectionHeader';
 import { Card, StCards } from '@/components/Card';
-import supabase from '@/supabase/supabaseClient';
+import NoFeeds from '@/components/NoFeeds';
 
 const Home = () => {
-  const [feeds, setFeeds] = useState([]);
+  const feeds = useSelector(({ feeds }) => feeds.feeds);
 
-  useEffect(() => {
-    const fetchFeeds = async () => {
-      const { data, error } = await supabase.from('feeds').select();
+  if (!feeds.length) {
+    return (
+      <StArticle>
+        <SectionHeaderHook />
+        <NoFeeds />
+      </StArticle>
+    );
+  }
 
-      setFeeds(data);
-      if (error) {
-        console.log('error =>', error);
-      }
-    };
-    fetchFeeds();
-  }, []);
-
-  console.log(feeds);
   return (
     <StArticle>
       <SectionHeaderHook />
