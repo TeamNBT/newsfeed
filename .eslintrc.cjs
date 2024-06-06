@@ -90,6 +90,11 @@ module.exports = {
             position: 'after'
           },
           {
+            pattern: '@/loader{,/**}',
+            group: 'internal',
+            position: 'after'
+          },
+          {
             pattern: '@/pages{,/**}',
             group: 'internal',
             position: 'after'
