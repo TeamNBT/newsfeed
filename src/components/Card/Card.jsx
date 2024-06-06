@@ -1,29 +1,56 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
+import supabase from '@/supabase/supabaseClient';
 
-const Card = () => {
+const Card = ({ feed }) => {
   const [isLiked, setIsLiked] = useState(false);
+  const liked = () => {
+    setIsLiked(!isLiked);
+    handleAdd();
+  };
+
+  const handleAdd = async () => {
+    const { data, error } = await supabase.from('favorites').insert({
+      feed_id: feed.id,
+      author: feed.author
+    });
+
+    if (error) {
+      console.log('error =>', error);
+    } else {
+      console.log('data =>', data);
+    }
+  };
 
   return (
     <StCard>
-      <StImgBox>
-        <StImg src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREDxwO6rYgn8oqacoaavErgjKZo9KG3PaPig&s" />
-      </StImgBox>
+      <StLink to={`/detail/${feed.id}`}>
+        <StImgBox>
+          <StImg src={feed.thumbnail} />
+        </StImgBox>
+      </StLink>
       <StHeader>
-        <StTypoGroupHStack>
-          <StTitle>안녕하세요 안녕 안녕</StTitle>
-          <StDivideBar />
-          <StAuthor>mari @스파르타 코딩 클럽</StAuthor>
-        </StTypoGroupHStack>
-        <StLikeButton onClick={() => setIsLiked((prev) => !prev)}>
-          <StLikeImg
-            src={
-              isLiked
-                ? 'src/assets/images/common/ic_general_like_fill.svg'
-                : 'src/assets/images/common/ic_general_like.svg'
-            }
-          ></StLikeImg>
+        <StLink to={`/detail/${feed.id}`}>
+          <StTypoGroupHStack>
+            <StTitle>{feed.title}</StTitle>
+            <StDivideBar />
+            <StAuthor>{feed.author}</StAuthor>
+          </StTypoGroupHStack>
+        </StLink>
+        <StLikeButton>
+          {isLiked ? (
+            <StLikeImg
+              onClick={liked}
+              src={'src/assets/images/common/ic_general_like_fill.svg'}
+            ></StLikeImg>
+          ) : (
+            <StLikeImg
+              onClick={liked}
+              src={'src/assets/images/common/ic_general_like.svg'}
+            ></StLikeImg>
+          )}
         </StLikeButton>
       </StHeader>
     </StCard>
@@ -48,6 +75,10 @@ const StCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 22px;
+`;
+
+const StLink = styled(Link)`
+  display: block;
 `;
 
 const StTitle = styled.span`
