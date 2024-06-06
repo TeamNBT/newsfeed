@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import useIsLoginUser from '@/hooks/useIsLoginUser';
 import useShallowEqualSelector from '@/hooks/useShallowEqualSelector';
 import { Button } from '@/components/Button';
 import DEFAULT_AVATAR from '@/assets/images/common/user.png';
@@ -13,6 +14,7 @@ import {
 import Retouch from './Retouch';
 
 const Comment = () => {
+  const isLoginUser = useIsLoginUser();
   const { id: feedId } = useParams();
   const [modal, setModal] = useState(false);
   const [selectedCommentId, setSelectedCommentId] = useState(null);
@@ -73,12 +75,14 @@ const Comment = () => {
 
   return (
     <StCommentTextBox>
-      <StForm onSubmit={onSubmit}>
-        <StCommentTextarea name="content" placeholder="댓글을 입력해주세요" required />
-        <Button type="submit" rounded variant="secondary">
-          입력
-        </Button>
-      </StForm>
+      {isLoginUser && (
+        <StForm onSubmit={onSubmit}>
+          <StCommentTextarea name="content" placeholder="댓글을 입력해주세요" required />
+          <Button type="submit" rounded variant="secondary">
+            입력
+          </Button>
+        </StForm>
+      )}
       {comments &&
         comments.map((comment) => {
           const isMyComment = userId === comment.user_id;
