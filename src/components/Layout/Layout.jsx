@@ -1,14 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import { styled } from 'styled-components';
-import Header from '../Header';
-import ProfileSidebar from './ProfileSidebar';
+import { Header } from '../Header';
+import ProfileSideBar from '../ProfileSideBar';
 
 const Layout = () => {
   return (
     <>
       <Header />
       <StLayout>
-        <ProfileSidebar />
+        <ProfileSideBar />
         <StSection>
           <Outlet />
         </StSection>
@@ -18,12 +18,12 @@ const Layout = () => {
 };
 
 const StLayout = styled.main`
-  width: 1400px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  flex: 1;
+  width: 100%;
 `;
 
 const StSection = styled.section`

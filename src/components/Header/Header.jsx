@@ -1,20 +1,18 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button } from '../Button';
+import HeaderButtons from './HeaderButtons';
 
 const Header = () => {
   return (
     <StHeader>
       <StContents>
-        <StLink href="/">
+        <StLink to="/">
           ✍🏻{' '}
           <StHeading>
             <StStrong>Blood</StStrong>folio
           </StHeading>
         </StLink>
-        <Button variant="secondary" href="/profile" rounded>
-          내 프로필
-        </Button>
+        <HeaderButtons />
       </StContents>
     </StHeader>
   );
@@ -47,10 +45,11 @@ const StLink = styled(Link)`
   display: flex;
   align-items: center;
   white-space: break-spaces;
+  font-size: 22px;
 `;
 
 const StHeading = styled.h1`
-  font-size: 20px;
+  font-size: inherit;
   font-weight: 300;
 `;
 
