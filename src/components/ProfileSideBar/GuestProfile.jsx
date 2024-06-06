@@ -25,7 +25,7 @@ const GuestProfile = () => {
           </StTextContent>
         </StRow>
       </StProfile>
-      <Button href="/signup" size="medium" fullWidth>
+      <Button href="/signin" size="medium" fullWidth>
         가입하고 포트폴리오 올리기
       </Button>
     </>
