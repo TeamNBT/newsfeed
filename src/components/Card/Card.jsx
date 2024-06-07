@@ -8,7 +8,7 @@ import { handleAddFavorite } from '@/redux/auth/authThunk';
 import supabase from '@/supabase/supabaseClient';
 
 const Card = ({ feed, onRemove }) => {
-  const userId = useSelector((state) => state.auth.data.userId);
+  const userId = useSelector((state) => state.auth.data?.userId);
   const [isLiked, setIsLiked] = useState(false);
   const dispatch = useDispatch();
 
@@ -21,6 +21,8 @@ const Card = ({ feed, onRemove }) => {
   };
 
   useEffect(() => {
+    if (!userId) return;
+
     const fetchFavoriteStatus = async () => {
       const { data, error } = await supabase
         .from('favorites')
@@ -38,7 +40,7 @@ const Card = ({ feed, onRemove }) => {
     };
 
     fetchFavoriteStatus();
-  }, [userId]);
+  }, [userId, feed.id, onRemove, isLiked]);
 
   return (
     <StCard>

@@ -1,11 +1,15 @@
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import useShallowEqualSelector from '@/hooks/useShallowEqualSelector';
 import SectionHeaderHook from '@/pages/Home/SectionHeader';
 import { Card, StCards } from '@/components/Card';
+import Loader from '@/components/Loader';
 import NoFeeds from '@/components/NoFeeds';
 
 const Home = () => {
-  const feeds = useSelector(({ feeds }) => feeds.feeds);
+  const { feeds, isLoading } = useShallowEqualSelector(({ feeds, auth }) => ({
+    feeds: feeds.feeds,
+    isLoading: auth.loading
+  }));
 
   if (!feeds.length) {
     return (
@@ -18,6 +22,7 @@ const Home = () => {
 
   return (
     <StArticle>
+      <Loader display={isLoading} />
       <SectionHeaderHook />
       <StCards>
         {feeds.map((feed) => (
