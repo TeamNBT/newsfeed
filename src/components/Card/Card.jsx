@@ -1,29 +1,46 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ellipsisStyle } from '@/styles/utils';
 import { GeneralLikeFillIcon, GeneralLikeIcon } from '@/svg';
+import { handleAddFavorite } from '@/redux/auth/authThunk';
 import supabase from '@/supabase/supabaseClient';
 
-const Card = ({ feed }) => {
+const Card = ({ feed, onRemove }) => {
+  const userId = useSelector((state) => state.auth.data?.userId);
   const [isLiked, setIsLiked] = useState(false);
+  const dispatch = useDispatch();
+
   const liked = () => {
     setIsLiked(!isLiked);
-    handleAdd();
-  };
-
-  const handleAdd = async () => {
-    const { data, error } = await supabase.from('favorites').insert({
-      feed_id: feed.id,
-      author: feed.author
-    });
-
-    if (error) {
-      console.log('error =>', error);
-    } else {
-      console.log('data =>', data);
+    dispatch(handleAddFavorite({ feedId: feed.id, userId, isLiked }));
+    if (isLiked && onRemove) {
+      onRemove(feed.id);
     }
   };
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchFavoriteStatus = async () => {
+      const { data, error } = await supabase
+        .from('favorites')
+        .select('feedIds')
+        .eq('author', userId)
+        .single();
+
+      if (error) {
+        console.log('error =>', error.message);
+      }
+
+      if (data && data.feedIds.includes(feed.id)) {
+        setIsLiked(!isLiked);
+      }
+    };
+
+    fetchFavoriteStatus();
+  }, [userId, feed.id, onRemove, isLiked]);
 
   return (
     <StCard>

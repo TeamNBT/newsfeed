@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Tabs, Tab } from '@/components/Tabs';
 import Typography from '@/components/Typography';
 import { colors } from '@/styles/constants';
-import ProtectedRoute from './ProtectedRoute';
 
 const tabs = [
   { to: '/profile', label: '내 포스트' },
@@ -24,7 +23,7 @@ const ProfileTabs = () => {
   const newTabs = getStyledTabs(pathname);
 
   return (
-    <ProtectedRoute>
+    <>
       <StTabs>
         {newTabs.map((tab) => (
           <Tab key={tab.to} as={Link} to={tab.to} active={tab.active}>
@@ -35,7 +34,7 @@ const ProfileTabs = () => {
         ))}
       </StTabs>
       <Outlet />
-    </ProtectedRoute>
+    </>
   );
 };
 

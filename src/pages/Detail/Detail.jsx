@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import useShallowEqualSelector from '@/hooks/useShallowEqualSelector';
 import { copyURLToClipboard } from '@/utils/copyURLToClipboard';
+import Loader from '@/components/Loader';
 import {
   GeneralLikeFillIcon,
   GeneralLikeIcon,
@@ -16,9 +17,10 @@ import Comment from './Comment';
 const Detail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { feed, userId } = useShallowEqualSelector(({ auth, feeds }) => ({
+  const { feed, userId, isLoading } = useShallowEqualSelector(({ auth, feeds }) => ({
     feed: feeds.feed,
-    userId: auth.data?.userId
+    userId: auth.data?.userId,
+    isLoading: feeds.loading
   }));
   const dispatch = useDispatch();
   const isMyPost = userId === feed.user_id;
@@ -36,6 +38,7 @@ const Detail = () => {
 
   return (
     <StDetailPage>
+      <Loader display={isLoading} />
       <StTitleBox>
         <StTitleText>
           <StTitle>{feed.title}</StTitle>
