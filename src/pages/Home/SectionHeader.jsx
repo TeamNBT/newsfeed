@@ -1,12 +1,17 @@
 import styled from 'styled-components';
+import Typography from '@/components/Typography';
 
 const SectionHeaderHook = () => {
   return (
     <StHeader>
       <StSectionHeader>
-        <StTitle>탐색하기</StTitle>
+        <Typography as="strong" color="#ffffff" variant="typography5" weight="semibold">
+          탐색하기
+        </Typography>
         <StDivideBar />
-        <StDescription>다양한 작품을 만나봐요</StDescription>
+        <Typography as="div" variant="typography4">
+          다양한 작품을 만나봐요
+        </Typography>
       </StSectionHeader>
       <StDivider />
     </StHeader>
@@ -24,19 +29,6 @@ const StDivideBar = styled.div`
   width: 1px;
   height: 16px;
   background-color: rgba(217, 217, 217, 0.8);
-`;
-
-const StTitle = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.4;
-  color: #ffffff;
-`;
-
-const StDescription = styled.span`
-  font-size: 16px;
-  line-height: 1.4;
-  color: #999999;
 `;
 
 const StSectionHeader = styled.div`

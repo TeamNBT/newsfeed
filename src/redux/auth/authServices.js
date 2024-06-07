@@ -1,4 +1,4 @@
-import supabase from '@/supabase/supabaseClient';
+import supabase, { VITE_SUPABASE_URL } from '@/supabase/supabaseClient';
 import { translateErrorMessage } from './authError';
 
 export const signUp = async (params, thunkAPI) => {
@@ -24,6 +24,27 @@ export const getUser = async (thunkAPI) => {
 export const updateUser = async (data, thunkAPI) => {
   const result = await processAuth('updateUser', thunkAPI, data);
   return result;
+};
+
+export const uploadAvatarImage = async (blob, thunkAPI) => {
+  try {
+    const { data, error } = await supabase.storage
+      .from('images')
+      .upload(`avatar/${Date.now()}`, blob);
+
+    if (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+
+    const imageUrl = `${VITE_SUPABASE_URL}/storage/v1/object/public/images/${data.path}`;
+
+    return {
+      imageUrl,
+      error
+    };
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
 };
 
 const processAuth = async (method, thunkAPI, params) => {

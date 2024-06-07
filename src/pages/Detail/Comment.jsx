@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import useIsLoginUser from '@/hooks/useIsLoginUser';
 import useShallowEqualSelector from '@/hooks/useShallowEqualSelector';
 import { Button } from '@/components/Button';
+import Typography from '@/components/Typography';
 import DEFAULT_AVATAR from '@/assets/images/common/user.png';
 import {
   createCommentThunk,
@@ -91,8 +92,10 @@ const Comment = () => {
             <StCommentWindow key={comment.id}>
               <StUserImg src={DEFAULT_AVATAR} />
               <StUser>
-                <StUserName>{comment.author}</StUserName>
-                <StCommentText>{comment.content}</StCommentText>
+                <Typography variant="typography3" color="#ffffff">
+                  {comment.author}
+                </Typography>
+                <Typography variant="typography3">{comment.content}</Typography>
                 {isMyComment && (
                   <StBtn>
                     <StRetouch onClick={() => onClickRetouch(comment.id)}>수정</StRetouch>
@@ -154,22 +157,6 @@ const StUser = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-`;
-
-const StUserName = styled.h4`
-  width: 42px;
-  height: 21px;
-  font-size: 15px;
-  line-height: 1.4;
-  text-align: left;
-  color: var(--color-white);
-`;
-
-const StCommentText = styled.p`
-  font-size: 15px;
-  line-height: 1.4;
-  text-align: left;
-  color: var(--color-foreground);
 `;
 
 const StBtn = styled.div`

@@ -1,10 +1,9 @@
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import AvatarEditUI from '../AvatarEditUI';
 import { Button } from '../Button';
 import {
-  StButton,
   StContent,
-  StHiddenText,
-  StIcon,
   StImage,
   StImageBox,
   StIntroduction,
@@ -29,10 +28,9 @@ const UserProfile = () => {
             <StImageBox>
               <StImage src={userInfo.thumbnail || DEFAULT_AVATAR} alt={userInfo.displayName} />
             </StImageBox>
-            <StButton type="button" to="/profile/modify">
-              <StIcon />
-              <StHiddenText>프로필 수정하기</StHiddenText>
-            </StButton>
+            <Link to="/profile/modify">
+              <AvatarEditUI />
+            </Link>
           </StThumbnail>
           <StTextContent>
             <StName>{userInfo.displayName}</StName>
