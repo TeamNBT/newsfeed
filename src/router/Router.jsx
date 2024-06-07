@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { authLoader, commonLoader } from '@/loader';
 import detailLoader from '@/loader/detailLoader';
 import homeLoader from '@/loader/homeLoader';
-import { Favorites, Home, Profile, Signup, Signin, Detail, Editor, Modifyprofile } from '@/pages';
+import { Favorites, Home, Profile, Signup, Signin, Detail, Editor, EditProfile } from '@/pages';
 import Layout from '@/components/Layout';
 import ProfileTabs from '@/components/ProfileTabs';
 
@@ -32,6 +32,10 @@ const routes = [
         ]
       },
       {
+        path: '/profile/modify',
+        element: <EditProfile />
+      },
+      {
         path: '/detail/:id',
         loader: detailLoader,
         element: <Detail />
@@ -55,11 +59,6 @@ const routes = [
   {
     path: '/editor/:id',
     element: <Editor />
-  },
-  {
-    path: '/Modifyprofile',
-    loader: authLoader,
-    element: <Modifyprofile />
   }
 ];
 
