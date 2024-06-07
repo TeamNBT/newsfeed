@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import useShallowEqualSelector from '@/hooks/useShallowEqualSelector';
 import { copyURLToClipboard } from '@/utils/copyURLToClipboard';
 import Loader from '@/components/Loader';
+import Typography from '@/components/Typography';
 import {
   GeneralLikeFillIcon,
   GeneralLikeIcon,
@@ -41,9 +42,11 @@ const Detail = () => {
       <Loader display={isLoading} />
       <StTitleBox>
         <StTitleText>
-          <StTitle>{feed.title}</StTitle>
+          <Typography variant="typography5" weight="semibold" color="#ffffff">
+            {feed.title}
+          </Typography>
           <span>|</span>
-          <StSubTitle>{feed.author}</StSubTitle>
+          <Typography variant="typography4">{feed.author}</Typography>
         </StTitleText>
         <StBtns>
           <StBtnGroup>
@@ -86,16 +89,6 @@ const StTitleText = styled.div`
   display: flex;
   align-items: center;
   gap: 9px;
-`;
-
-const StTitle = styled.span`
-  font-size: 20px;
-  color: var(--color-white);
-`;
-
-const StSubTitle = styled.span`
-  font-size: 16px;
-  color: var(--color-foreground);
 `;
 
 const StBtns = styled.div`

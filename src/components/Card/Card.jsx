@@ -6,6 +6,7 @@ import { ellipsisStyle } from '@/styles/utils';
 import { GeneralLikeFillIcon, GeneralLikeIcon } from '@/svg';
 import { handleAddFavorite } from '@/redux/auth/authThunk';
 import supabase from '@/supabase/supabaseClient';
+import Typography from '../Typography';
 
 const Card = ({ feed, onRemove }) => {
   const userId = useSelector((state) => state.auth.data?.userId);
@@ -52,9 +53,19 @@ const Card = ({ feed, onRemove }) => {
       <StHeader>
         <StLink to={`/detail/${feed.id}`}>
           <StTypoGroupHStack>
-            <StTitle>{feed.title}</StTitle>
+            <StEllipsis>
+              <Typography as="strong" variant="typography5" weight="semibold" color="#ffffff">
+                {feed.title}
+              </Typography>
+            </StEllipsis>
             <StDivideBar />
-            <StAuthor>{feed.author}</StAuthor>
+            <StAuthor>
+              <StEllipsis>
+                <Typography as="span" variant="typography4">
+                  {feed.author}
+                </Typography>
+              </StEllipsis>
+            </StAuthor>
           </StTypoGroupHStack>
         </StLink>
         <StLikeButton>
@@ -89,12 +100,11 @@ const StLink = styled(Link)`
   display: block;
 `;
 
-const StTitle = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.4;
-  color: #ffffff;
-  ${ellipsisStyle(1)};
+const StEllipsis = styled.div`
+  strong,
+  span {
+    ${ellipsisStyle(1)};
+  }
 `;
 
 const StAuthor = styled.span`

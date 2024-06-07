@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
+import AvatarEditUI from '@/components/AvatarEditUI';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import DEFAULT_AVATAR from '@/assets/images/common/user.png';
+import { uploadAvatarImage } from '@/redux/auth/authServices';
 import { updateUserThunk } from '@/redux/auth/authThunk';
 
 const EditProfile = () => {
@@ -11,13 +14,14 @@ const EditProfile = () => {
     ({ auth }) => auth.data?.userInfo
   );
 
+  const [imageSrc, setImageSrc] = useState();
+
   const onSubmit = async (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.target);
-    const { displayName, job, introduction, password, confirmPassword } = Object.fromEntries(
-      formData.entries()
-    );
+    const { displayName, job, introduction, password, confirmPassword, thumbnailFile } =
+      Object.fromEntries(formData.entries());
 
     if (password && password !== confirmPassword) {
       alert('비밀번호가 일치하지 않아요');
@@ -29,7 +33,8 @@ const EditProfile = () => {
         data: {
           displayName,
           job,
-          introduction
+          introduction,
+          ...(thumbnailFile && { thumbnail: imageSrc })
         },
         ...(password && { password })
       })
@@ -43,14 +48,43 @@ const EditProfile = () => {
     alert('프로필이 변경되었어요');
   };
 
+  const handleImageClick = () => {
+    document.getElementById('fileInput').click();
+  };
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const uploadResult = await uploadAvatarImage(file);
+
+      if (uploadResult.error) {
+        alert('이미지 업로드에 실패했어요');
+        return;
+      }
+
+      setImageSrc(uploadResult.imageUrl);
+    }
+  };
+
   return (
     <StProfileForm onSubmit={onSubmit}>
       <h2>내 프로필</h2>
       <div>내 프로필을 확인하고 수정할 수 있어요</div>
       <StLine />
       <StImageBox>
-        <StImage src={thumbnail || DEFAULT_AVATAR} />
+        <StImage src={imageSrc || thumbnail || DEFAULT_AVATAR} />
+        <button type="button" onClick={handleImageClick}>
+          <AvatarEditUI />
+        </button>
       </StImageBox>
+      <input
+        type="file"
+        id="fileInput"
+        name="thumbnailFile"
+        style={{ display: 'none' }}
+        onChange={handleFileChange}
+      />
       <StJoinFormInputBox>
         <StLabel htmlFor="displayName">이름</StLabel>
         <StInput
@@ -96,10 +130,8 @@ const StButton = styled(Button)`
 const StImageBox = styled.div`
   width: 80px;
   height: 80px;
-  background-color: #e4e4e4;
-  border-radius: 50%;
-  overflow: hidden;
   flex-shrink: 0;
+  position: relative;
 `;
 
 const StInput = styled(Input)`
@@ -116,6 +148,8 @@ const StImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 50%;
+  overflow: hidden;
 `;
 
 const StProfileForm = styled.form`
