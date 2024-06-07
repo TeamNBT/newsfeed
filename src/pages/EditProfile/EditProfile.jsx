@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { styled } from 'styled-components';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import DEFAULT_AVATAR from '@/assets/images/common/user.png';
 import { updateUserThunk } from '@/redux/auth/authThunk';
 
 const EditProfile = () => {
@@ -46,7 +47,7 @@ const EditProfile = () => {
       <div>내 프로필을 확인하고 수정할 수 있어요</div>
       <StLine />
       <StImageBox>
-        <StImage src={'src/assets/images/common/user.png'} />
+        <StImage src={DEFAULT_AVATAR} />
       </StImageBox>
       <StJoinFormInputBox>
         <StLabel htmlFor="displayName">이름</StLabel>
