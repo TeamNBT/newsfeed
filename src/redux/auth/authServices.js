@@ -21,6 +21,11 @@ export const getUser = async (thunkAPI) => {
   return result;
 };
 
+export const updateUser = async (data, thunkAPI) => {
+  const result = await processAuth('updateUser', thunkAPI, data);
+  return result;
+};
+
 const processAuth = async (method, thunkAPI, params) => {
   try {
     const result = await supabase.auth[method](params);

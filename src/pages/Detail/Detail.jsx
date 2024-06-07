@@ -1,7 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import useIsLoginUser from '@/hooks/useIsLoginUser';
 import useShallowEqualSelector from '@/hooks/useShallowEqualSelector';
 import { copyURLToClipboard } from '@/utils/copyURLToClipboard';
 import {
@@ -17,10 +16,9 @@ import Comment from './Comment';
 const Detail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const isLoginUser = useIsLoginUser();
   const { feed, userId } = useShallowEqualSelector(({ auth, feeds }) => ({
     feed: feeds.feed,
-    userId: auth.data.userId
+    userId: auth.data?.userId
   }));
   const dispatch = useDispatch();
   const isMyPost = userId === feed.user_id;
@@ -66,7 +64,7 @@ const Detail = () => {
       <StDiv>
         <div dangerouslySetInnerHTML={{ __html: feed.contents }} />
       </StDiv>
-      {isLoginUser && <Comment />}
+      <Comment />
     </StDetailPage>
   );
 };

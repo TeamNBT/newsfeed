@@ -29,7 +29,7 @@ const UserProfile = () => {
             <StImageBox>
               <StImage src={userInfo.avatar || DEFAULT_AVATAR} alt={userInfo.displayName} />
             </StImageBox>
-            <StButton type="button">
+            <StButton type="button" to="/profile/modify">
               <StIcon />
               <StHiddenText>프로필 수정하기</StHiddenText>
             </StButton>
