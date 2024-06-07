@@ -7,7 +7,9 @@ import { updateUserThunk } from '@/redux/auth/authThunk';
 
 const EditProfile = () => {
   const dispatch = useDispatch();
-  const { displayName, introduction, job, email } = useSelector(({ auth }) => auth.data?.userInfo);
+  const { displayName, introduction, job, email, thumbnail } = useSelector(
+    ({ auth }) => auth.data?.userInfo
+  );
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -47,7 +49,7 @@ const EditProfile = () => {
       <div>내 프로필을 확인하고 수정할 수 있어요</div>
       <StLine />
       <StImageBox>
-        <StImage src={DEFAULT_AVATAR} />
+        <StImage src={thumbnail || DEFAULT_AVATAR} />
       </StImageBox>
       <StJoinFormInputBox>
         <StLabel htmlFor="displayName">이름</StLabel>
