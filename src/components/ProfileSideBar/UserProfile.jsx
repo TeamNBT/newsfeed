@@ -27,7 +27,7 @@ const UserProfile = () => {
         <StRow>
           <StThumbnail>
             <StImageBox>
-              <StImage src={userInfo.avatar || DEFAULT_AVATAR} alt={userInfo.displayName} />
+              <StImage src={userInfo.thumbnail || DEFAULT_AVATAR} alt={userInfo.displayName} />
             </StImageBox>
             <StButton type="button" to="/profile/modify">
               <StIcon />
