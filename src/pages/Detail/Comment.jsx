@@ -21,9 +21,9 @@ const Comment = () => {
   const dispatch = useDispatch();
   const comments = useSelector(({ comments }) => comments.data);
   const { userId, author, thumbnail } = useShallowEqualSelector(({ auth }) => ({
-    userId: auth.data.userId,
-    author: auth.data.userInfo.displayName,
-    thumbnail: auth.data.userInfo.thumbnail
+    userId: auth.data?.userId,
+    author: auth.data.userInfo?.displayName,
+    thumbnail: auth.data.userInfo?.thumbnail
   }));
 
   const onSubmit = async (event) => {
