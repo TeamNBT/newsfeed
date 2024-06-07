@@ -40,7 +40,7 @@ const Card = ({ feed, onRemove }) => {
     };
 
     fetchFavoriteStatus();
-  }, [userId, feed.id, onRemove, isLiked]);
+  }, [userId]);
 
   return (
     <StCard>
