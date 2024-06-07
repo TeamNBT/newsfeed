@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ellipsisStyle, e11yHidden } from '@/styles/utils';
 import pencil from '@/assets/images/common/pencil.png';
@@ -32,7 +33,7 @@ export const StThumbnail = styled.div`
   position: relative;
 `;
 
-export const StButton = styled.button`
+export const StButton = styled(Link)`
   position: absolute;
   bottom: 0;
   right: 1px;
