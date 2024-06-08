@@ -90,7 +90,7 @@ const Comment = () => {
 
           return (
             <StCommentWindow key={comment.id}>
-              <StUserImg src={DEFAULT_AVATAR} />
+              <StUserImg src={comment.thumbnail || DEFAULT_AVATAR} />
               <StUser>
                 <Typography variant="typography3" color="#ffffff">
                   {comment.author}
