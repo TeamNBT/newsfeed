@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import AvatarEditUI from '@/components/AvatarEditUI';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import Typography from '@/components/Typography';
 import DEFAULT_AVATAR from '@/assets/images/common/user.png';
 import { uploadAvatarImage } from '@/redux/auth/authServices';
 import { updateUserThunk } from '@/redux/auth/authThunk';
@@ -69,8 +70,15 @@ const EditProfile = () => {
 
   return (
     <StProfileForm onSubmit={onSubmit}>
-      <h2>내 프로필</h2>
-      <div>내 프로필을 확인하고 수정할 수 있어요</div>
+      <StDiv>
+        <Typography as="strong" variant="typography5" weight="semibold" color="#121212">
+          내 프로필
+        </Typography>
+        <StDivideBar />
+        <Typography as="p" variant="typography4">
+          내 프로필을 확인하고 수정할 수 있어요
+        </Typography>
+      </StDiv>
       <StLine />
       <StImageBox>
         <StImage src={imageSrc || thumbnail || DEFAULT_AVATAR} />
@@ -123,6 +131,18 @@ const EditProfile = () => {
   );
 };
 
+const StDivideBar = styled.div`
+  width: 1px;
+  height: 16px;
+  background-color: rgba(217, 217, 217, 0.8);
+`;
+
+const StDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 9px;
+`;
+
 const StButton = styled(Button)`
   margin-top: 50px;
 `;
@@ -135,6 +155,7 @@ const StImageBox = styled.div`
 `;
 
 const StInput = styled(Input)`
+  width: 100%;
   border: 1px solid #e8e8e8;
 `;
 
@@ -165,8 +186,8 @@ const StProfileForm = styled.form`
 const StLine = styled.div`
   width: 100%;
   height: 1px;
-  border-top: 1px solid hsl(0, 0%, 94.11764705882352%);
-  margin: 20px 0;
+  border-top: 1px solid #e8e8e8;
+  margin: 12px 0;
 `;
 
 const StJoinFormInputBox = styled.div`

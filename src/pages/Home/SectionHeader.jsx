@@ -25,6 +25,7 @@ const StHeader = styled.div`
   padding: 0 0 6px;
   margin-bottom: 32px;
 `;
+
 const StDivideBar = styled.div`
   width: 1px;
   height: 16px;
