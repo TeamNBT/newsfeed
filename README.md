@@ -2,7 +2,7 @@
 
 리액트 숙련 주차 뉴스피드 팀 프로젝트에서 내 작업물을 올리고 공유하는 사이트를 만들었어요<br />
 백엔드는 supabase를 이용했어요<br/><br/>
-🔗 Story Book : https://storybook-nbt.vercel.app
+🔗 Story Book : https://bloodfolio-system.vercel.app
 <br/>
 🔗 프로젝트 컨벤션 정리 : https://github.com/SpartaNBTTeam/newsfeed/issues/1
 <br/>
