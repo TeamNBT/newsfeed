@@ -1,0 +1,47 @@
+# 이름: 다른 저장소로 푸시하여 vercel에 배포
+name: git push into another repo to deploy to vercel
+
+on:
+  push:
+    branches: [main]
+
+# 작업 정의
+
+jobs:
+  build:
+    # 최신 우분투에서 실행
+    runs-on: ubuntu-latest
+    # 컨테이너: pandoc/latex 사용
+    container: pandoc/latex
+    steps:
+      # 체크아웃 액션 사용
+      - uses: actions/checkout@v2
+      # mustache 설치 (날짜 업데이트를 위해)
+      - name: Install mustache (to update the date)
+        run: apk add ruby && gem install mustache
+      # 출력 생성
+      - name: creates output
+        run: sh ./build.sh
+      # 다른 저장소로 푸시
+      - name: Pushes to another repository
+        id: push_directory
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          # GitHub API 토큰 설정
+          API_TOKEN_GITHUB: ${{ secrets.PERSONAL_REPO }}
+        with:
+          # 소스 디렉토리 설정
+          source-directory: 'output'
+          # 대상 GitHub 사용자 이름 설정
+          destination-github-username: '1eeyerin'
+          # 대상 저장소 이름 설정
+          destination-repository-name: 'BloodFolio'
+          # 사용자 이메일 설정
+          user-email: ${{ secrets.OFFICIAL_EMAIL }}
+          # 커밋 메시지 설정
+          commit-message: ${{ github.event.commits[0].message }}
+          # 대상 브랜치 설정
+          target-branch: main
+      # push-to-another-repository 액션에서 내보낸 변수 테스트
+      - name: Test get variable exported by push-to-another-repository
+        run: echo $DESTINATION_CLONED_DIRECTORY
