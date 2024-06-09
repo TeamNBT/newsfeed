@@ -31,9 +31,9 @@ jobs:
           # 소스 디렉토리 설정
           source-directory: 'output'
           # 대상 GitHub 사용자 이름 설정
-          destination-github-username: '1eeyerin'
+          destination-github-username: [1eeyerin]
           # 대상 저장소 이름 설정
-          destination-repository-name: 'BloodFolio'
+          destination-repository-name: [BloodFolio]
           # 사용자 이메일 설정
           user-email: ${{ secrets.OFFICIAL_EMAIL }}
           # 커밋 메시지 설정
