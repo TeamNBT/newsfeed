@@ -5,17 +5,20 @@ on:
   push:
     branches: [main]
 
-# 작업 정의
-
 jobs:
   build:
-    # 최신 우분투에서 실행
     runs-on: ubuntu-latest
     # 컨테이너: pandoc/latex 사용
     container: pandoc/latex
     steps:
       # 체크아웃 액션 사용
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
       # mustache 설치 (날짜 업데이트를 위해)
       - name: Install mustache (to update the date)
         run: apk add ruby && gem install mustache
