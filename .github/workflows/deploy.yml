@@ -14,9 +14,6 @@ jobs:
       # 체크아웃 액션 사용
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          node-version: 20
-          cache: 'npm'
       # mustache 설치 (날짜 업데이트를 위해)
       - name: Install mustache (to update the date)
         run: apk add ruby && gem install mustache
