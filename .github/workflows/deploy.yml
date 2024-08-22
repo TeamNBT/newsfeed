@@ -17,17 +17,21 @@ jobs:
         with:
           repository: 1eeyerin/BloodFolio
           token: ${{ secrets.PERSONAL_REPO }}
-          path: 'tmp_repo'
+          path: personal-repo
 
-      - name: Copy Relevant Files to Personal Repository
+      - name: Copy Files to Personal Repository
         run: |
-          rsync -av --exclude=".git" --exclude=".github" --exclude="dist" --exclude="node_modules" --include="storybook/***" --include="src/***" --include="*.js" --include="*.json" --include="*.md" --include="*.lock" --exclude="*" ./ tmp_repo/
+          # Copy all files except the excluded directories
+          rsync -av --exclude={.git,.github,dist,node_modules} ./ ./personal-repo/
 
-      - name: Push to Personal Repository
-        run: |
-          cd tmp_repo
-          git config --local user.email ${{ secrets.OFFICIAL_EMAIL }}
-          git config --local user.name 'GitHub Actions'
+          cd personal-repo
+          git config --local user.email "${{ secrets.OFFICIAL_EMAIL }}"
+          git config --local user.name "yerin"
+
+          # Get the last commit message from the main repository
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B ../)
+
+          # Commit and push the changes with the same commit message
           git add .
-          git commit -m 'Deploy Build Output to Personal Repository'
-          git push origin main
+          git commit -m "$COMMIT_MESSAGE"
+          git push
