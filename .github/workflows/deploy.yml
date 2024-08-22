@@ -1,37 +1,41 @@
-name: Deploy to Personal Repository
+name: Deploy
 
 on:
   push:
     branches: ['main']
 
 jobs:
-  deploy-to-personal-repo:
+  build:
     runs-on: ubuntu-latest
+    container: pandoc/latex
 
     steps:
-      - name: Checkout Main Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Install mustache (to update the date)
+        run: apk add ruby && gem install mustache
+      - name: creates output
+        run: sh ./build.sh
+      - name: Pushes to another repository
+        id: push_directory
 
-      - name: Checkout Personal Repository
-        uses: actions/checkout@v4
+        uses: cpina/github-action-push-to-another-repository@main
+
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.PERSONAL_REPO }}
+
         with:
-          repository: 1eeyerin/BloodFolio
-          token: ${{ secrets.PERSONAL_REPO }}
-          path: personal-repo
+          source-directory: 'output'
 
-      - name: Copy Files to Personal Repository
-        run: |
-          # Copy all files except the excluded directories
-          rsync -av --exclude={.git,.github,dist,node_modules} ./ ./personal-repo/
+          destination-github-username: 1eeyerin
 
-          cd personal-repo
-          git config --local user.email "${{ secrets.OFFICIAL_EMAIL }}"
-          git config --local user.name "yerin"
+          destination-repository-name: BloodFolio
 
-          # Get the last commit message from the main repository
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B ../)
+          user-email: ${{ secrets.OFFICIAL_EMAIL }}
 
-          # Commit and push the changes with the same commit message
-          git add .
-          git commit -m "$COMMIT_MESSAGE"
-          git push
+          commit-message: ${{ github.event.commits[0].message }}
+
+          target-branch: main
+
+      - name: Test get variable exported by push-to-another-repository
+
+        run: echo $DESTINATION_CLONED_DIRECTORY
