@@ -9,18 +9,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout Main Repository
         uses: actions/checkout@v4
 
-      - name: Copy Files to Personal Repository
+      - name: Checkout Personal Repository
         uses: actions/checkout@v4
         with:
           repository: 1eeyerin/BloodFolio
           token: ${{ secrets.PERSONAL_REPO }}
           path: 'tmp_repo'
 
-      - name: Copy Files to Personal Repository
-        run: rsync -av --exclude=".git" --exclude=".github" --exclude="dist" --exclude="node_modules" ./ tmp_repo/
+      - name: Copy Relevant Files to Personal Repository
+        run: |
+          rsync -av --exclude=".git" --exclude=".github" --exclude="dist" --exclude="node_modules" --include="storybook/***" --include="src/***" --include="*.js" --include="*.json" --include="*.md" --include="*.lock" --exclude="*" ./ tmp_repo/
 
       - name: Push to Personal Repository
         run: |
